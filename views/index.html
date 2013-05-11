@@ -1,3 +1,6 @@
 <%- include header.html %>
-<p>主页</p>
+<% locals.posts.forEach(function(post, index){ %>
+    <p><h2><a href="#"><%= post.title %></a></h2><time><%= post.time %> by:<a href="#"><%= post.user %></a></time></p>
+    <p><%- post.post %></p>
+<% }) %>
 <%- include footer.html %>

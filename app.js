@@ -16,7 +16,9 @@ var express = require('express')
 
 var app = express();
 
+//所有环境下
 app.configure(function(){
+    //设置端口
     app.set('port', process.env.PORT || 3000);
     //Express对MVC中views的默认目录设置
     app.set('views', __dirname + '/views');
@@ -44,7 +46,7 @@ app.configure(function(){
     app.use(app.router);
     app.use(express.static(path.join(__dirname, 'public')));
 });
-
+//开发环境
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
