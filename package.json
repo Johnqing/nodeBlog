@@ -8,6 +8,7 @@
   "dependencies": {
     "express": "*",
     "ejs": "*",
+    "markdown-js": "*",
     "mongodb": "*",
     "connect-mongo": "*",
     "connect-flash": "*"

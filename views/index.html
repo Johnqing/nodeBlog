@@ -1,6 +1,6 @@
 <%- include header.html %>
 <% locals.posts.forEach(function(post, index){ %>
-    <p><h2><a href="#"><%= post.title %></a></h2><time><%= post.time %> by:<a href="#"><%= post.user %></a></time></p>
+    <p><h2><a href="/<%= post.user %>/<%= post.time %>/<%= post.title %>"><%= post.title %></a></h2><time><%= post.time %> by:<a href="/<%= post.user %>"><%= post.user %></a></time></p>
     <p><%- post.post %></p>
 <% }) %>
 <%- include footer.html %>

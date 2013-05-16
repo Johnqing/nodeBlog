@@ -1,0 +1,6 @@
+<%- include header.html %>
+<% locals.posts.forEach(function(post, index){ %>
+    <p><h2><a href="#"><%= post.title %></a></h2><time><%= post.time %></time></p>
+    <p><%- post.post %></p>
+<% }) %>
+<%- include footer.html %>

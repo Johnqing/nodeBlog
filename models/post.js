@@ -53,9 +53,8 @@ Post.get = function(username, callback){
             var query = {};
 
             if(username){
-                query = username;
+                query.username = username;
             }
-
             collection.find(query).sort({
                 time: -1
             }).toArray(function(err, docs){

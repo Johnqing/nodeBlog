@@ -12,7 +12,9 @@
  */
 var crypto = require('crypto')
     , User = require('../models/user')
-    , Post = require('../models/post');
+    , Post = require('../models/post')
+    //添加markdown模块
+    , markdown = require('markdown-js');
 
 /**
  * 检测登录状态
@@ -149,13 +151,13 @@ module.exports = function(app){
 
     app.post('/post', loginChect.login);
     app.post('/post', function(req, res){
-        console.log(req.session.user.name);
         var data = {
             username: req.session.user.name,
             title: req.body.title,
-            post: req.body.post
+            post: markdown.makeHtml(req.body.post)
         },
         post = new Post(data);
+        console.log(data.post);
         post.save(function(err){
             if(err){
                 req.flash('error', err);
@@ -166,6 +168,60 @@ module.exports = function(app){
 
         });
 
+    });
+    //user page
+    app.get('/:user', function(req, res){
+        User.get(req.params.user, function(err, user){
+            if(!user){
+                req.flash('error', '该用户不存在！');
+                return res.redirect('/')
+            }
+            Post.get(user.name, function(err, posts){
+                if(err){
+                    req.flash('error', err);
+                    return res.redirect('/');
+                }
+                res.render('user',{
+                    title: user.name,
+                    posts:posts,
+                    user : req.session.user,
+                    success : req.flash('success').toString(),
+                    error : req.flash('error').toString()
+                });
+            });
+        });
+    });
+    //文章页
+    app.get('/:user/:time/:title', function(req, res){
+        User.get(req.params.user, function(err, user){
+            if(!user){
+                req.flash('error', '该用户不存在！');
+                return res.redirect('/')
+            }
+            Post.get(user.name, function(err, posts){
+                if(err){
+                    req.flash('err',err);
+                    return res.redirect('/');
+                }
+                var flag=false;
+                posts.forEach(function (article) {
+                    if(article.title==req.params.title){
+                        flag=true;
+                        res.render('article', {
+                            title: article.title,
+                            posts: article,
+                            user: req.session.user,
+                            success: req.flash('success').toString(),
+                            error: req.flash('error').toString()
+                        });
+                    }
+                });
+                if(!flag){
+                    req.flash('error','文章不存在');
+                    return res.redirect('/');
+                }
+            });
+        });
     });
 };
 
