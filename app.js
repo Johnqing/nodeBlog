@@ -72,8 +72,8 @@ app.use(function(req, res, next){
 // 在最新的ejs中，加入了作用域的概念，在模版文件中不能直接引用变量名来访问变量，而需要使用locals.xxx来访问相应的变量。
 // 这样做是为了避免全局变量的污染和冲突。
     res.locals.user = req.session.user;
-    res.locals.error = req.session.error;
-    res.locals.success = req.session.success;
+    res.locals.error = err.length ? err : null;
+    res.locals.success = success.length ? success : null;
 });
 
 http.createServer(app).listen(app.get('port'), function(){
