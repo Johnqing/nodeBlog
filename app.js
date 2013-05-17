@@ -4,7 +4,7 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
+  , getUrl = require('./routes/getUrl')
   , http = require('http')
   , path = require('path')
     //   connect-mongo模块用来存储会话信息到数据库(3.0版本后尾部的express必须添加)
@@ -43,6 +43,7 @@ app.configure(function(){
             db: settings.db
         })
     }));
+    app.use(getUrl.sundry);
     app.use(app.router);
     app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -56,8 +57,8 @@ app.configure('development', function(){
  */
 //app.get('/', routes.index);
 //app.get('/users', user.list);
-routes(app);
 
+//app.use(getUrl.sundry);
 /**
  * 视图助手
  * 为了实现不同登录状态下页面呈现不同内容的功能，我们需要创建动态视图助手，通过它我们才能在视图中访问会话中的用户数据。
@@ -69,13 +70,12 @@ routes(app);
 app.use(function(req, res, next){
     var err = req.flash('error')
         , success = req.flash('success');
-// 在最新的ejs中，加入了作用域的概念，在模版文件中不能直接引用变量名来访问变量，而需要使用locals.xxx来访问相应的变量。
-// 这样做是为了避免全局变量的污染和冲突。
     res.locals.user = req.session.user;
     res.locals.error = err.length ? err : null;
     res.locals.success = success.length ? success : null;
+    next();
 });
-
+routes(app);
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

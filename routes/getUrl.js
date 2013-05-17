@@ -1,6 +1,6 @@
 exports.sundry = function(req, res, next){
     //1.根据请求url选中顶部,侧边菜单
-    res.locals.activeNav = function(nav){
+    res.locals.active = function(nav){
         var result = '';
         if(nav == '/'){
             if(req.path == '/'){

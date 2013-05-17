@@ -12,13 +12,13 @@
   </header>
 
   <nav>
-      <span><a title="主页" href="/">home</a></span>
+      <span class="<%= locals.active('/') %>"><a title="主页" href="/">home</a></span>
       <% if(locals.user){ %>
-      <span><a title="发表" href="/post">post</a></span>
+      <span class="<%= locals.active('/post') %>"><a title="发表" href="/post">post</a></span>
       <span><a title="登出" href="/logout">logout</a></span>
       <% } else { %>
-      <span><a title="登录" href="/login">login</a></span>
-      <span><a title="注册" href="/reg">register</a></span>
+      <span class="<%= locals.active('/login') %>"><a title="登录" href="/login">login</a></span>
+      <span class="<%= locals.active('/reg') %>"><a title="注册" href="/reg">register</a></span>
       <% } %>
   </nav>
   <article>
